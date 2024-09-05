@@ -9,9 +9,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "biome lint -- apply ./app",
+    "format": "biome format ./app --write"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.8.3",
     "@types/node": "22.5.4",
     "@types/react": "18.3.5",
     "eslint": "^8",
