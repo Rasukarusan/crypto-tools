@@ -5,12 +5,22 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "nodemon"
+    "exec:js": "nodemon",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "devDependencies": {
-    "nodemon": "^3.1.4"
+    "@types/node": "22.5.4",
+    "@types/react": "18.3.5",
+    "nodemon": "^3.1.4",
+    "typescript": "5.5.4"
   },
   "dependencies": {
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "next": "^14.2.8",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   }
 }
