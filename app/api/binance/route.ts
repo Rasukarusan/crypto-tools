@@ -1,12 +1,17 @@
-import { NextResponse } from 'next/server'
-import { dateToUnixTime, utcToJst } from '../../util'
+import { type NextRequest, NextResponse } from 'next/server'
+import { utcToJst } from '../../util'
 
 // @see https://binance-docs.github.io/apidocs/spot/en/#kline-candlestick-data
-export async function GET(request: Request, { params }) {
-  console.log(params)
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams
+  const interval = searchParams.get('interval')
+  const startTime = searchParams.get('startTime')
+  const endTime = searchParams.get('endTime')
+  // const limit = searchParams.get('limit')
+  console.log(interval)
+
   try {
     const url = 'https://api.binance.com/api/v3/klines'
-    const symbol = 'BTCJPY' // BTCJPY BTCUSDT SUIUSDT
     /**
      * Interval          Interval Value
      * ---------------------------------
@@ -17,8 +22,8 @@ export async function GET(request: Request, { params }) {
      * weeks             1w
      * months            1M
      */
-    const interval = '1d'
-    const startTime = dateToUnixTime('2023-08-01 00:00:00').toString()
+    // const interval = '1d'
+    // const startTime = dateToUnixTime('2023-08-01 00:00:00').toString()
     // const endTime = dateToUnixTime('2024-09-01 00:00:00').toString()
     const timeZone = '9'
     const limit = '500'
@@ -29,7 +34,7 @@ export async function GET(request: Request, { params }) {
         symbol,
         interval,
         startTime,
-        // endTime,
+        endTime,
         timeZone,
         limit,
       }
@@ -38,7 +43,6 @@ export async function GET(request: Request, { params }) {
       console.log(`------${symbol}------`)
       data[symbol] = []
       for (const v of res) {
-        console.log(v[0])
         const openTime = utcToJst(new Date(v[0]))
         const openPrice = v[1]
         data[symbol].push({ date: openTime, price: openPrice })

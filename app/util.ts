@@ -14,3 +14,21 @@ export const dateToUnixTime = (dateString) => {
   const unixTime = date.getTime();
   return unixTime;
 };
+
+// Function to normalize the price data
+export const normalizeData = (data) => {
+  const suiInitialPrice = data[0].sui.price;
+  const btcInitialPrice = data[0].btc.price;
+
+  return data.map((entry) => ({
+    date: entry.date,
+    sui: {
+      price: (entry.sui.price / suiInitialPrice) * 100, // SUI as percentage of initial price
+      originalPrice: entry.sui.price, // Keep the original price
+    },
+    btc: {
+      price: (entry.btc.price / btcInitialPrice) * 100, // BTC as percentage of initial price
+      originalPrice: entry.btc.price, // Keep the original price
+    },
+  }));
+};

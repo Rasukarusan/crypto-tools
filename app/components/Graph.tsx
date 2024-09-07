@@ -1,5 +1,4 @@
 'use client'
-import { useState } from 'react'
 import {
   CartesianGrid,
   Legend,
@@ -10,65 +9,37 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-
-// Function to normalize the price data
-const normalizeData = (data) => {
-  const suiInitialPrice = data[0].sui.price
-  const btcInitialPrice = data[0].btc.price
-
-  return data.map((entry) => ({
-    date: entry.date,
-    sui: {
-      price: (entry.sui.price / suiInitialPrice) * 100, // SUI as percentage of initial price
-      originalPrice: entry.sui.price, // Keep the original price
-    },
-    btc: {
-      price: (entry.btc.price / btcInitialPrice) * 100, // BTC as percentage of initial price
-      originalPrice: entry.btc.price, // Keep the original price
-    },
-  }))
-}
+import { useFetchData } from '../useFetchData'
+import { TimePeriodTabs } from './TimePeriodTabs'
 
 export const Graph = () => {
-  const [data, setData] = useState([])
+  const { data } = useFetchData()
 
-  const onClick = async () => {
-    const res = await fetch('/api/binance').then((res) => res.json())
-    console.log(res)
-    if (!res.result) return
-    const result = []
-    const dates = res.data.BTCUSDT.map((item) => item.date) // 日付を取り出す
-    dates.forEach((date, index) => {
-      result.push({
-        date,
-        sui: {
-          price: res.data.SUIUSDT[index].price,
-        },
-        btc: {
-          price: res.data.BTCUSDT[index].price,
-        },
-      })
-    })
-    console.log(result)
-    setData(normalizeData(result))
-  }
-
-  // Custom tooltip formatter
   const customTooltip = (value, name, props) => {
     if (name === 'SUI') {
-      return [`${props.payload.sui.originalPrice}`, 'SUI Price']
+      return [
+        `$${Number(props.payload.sui.originalPrice).toFixed(2)}`,
+        'SUI Price',
+      ]
     }
     if (name === 'BTC') {
-      return [`${props.payload.btc.originalPrice}`, 'BTC Price']
+      return [
+        `$${Number(props.payload.btc.originalPrice).toFixed(2)}`,
+        'BTC Price',
+      ]
     }
     return [value, name]
   }
 
   return (
-    <div style={{ height: '500px' }}>
-      <button type="button" onClick={onClick}>
-        Click
-      </button>
+    <div className="h-[500px] mx-auto">
+      <div className="mb-8">
+        <TimePeriodTabs
+          onClick={async () => {
+            console.log('hoge')
+          }}
+        />
+      </div>
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
           width={500}
@@ -86,7 +57,7 @@ export const Graph = () => {
             dataKey="date"
             tickFormatter={(date) => new Date(date).toLocaleDateString()}
           />
-          <YAxis />
+          <YAxis domain={['auto', 'auto']} />
           <Tooltip formatter={customTooltip} />
           <Legend />
           <Line
