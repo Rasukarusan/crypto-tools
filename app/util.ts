@@ -23,11 +23,11 @@ export const normalizeData = (data) => {
   return data.map((entry) => ({
     date: entry.date,
     sui: {
-      price: (entry.sui.price / suiInitialPrice) * 100, // SUI as percentage of initial price
+      price: entry.sui.price / suiInitialPrice, // SUI as percentage of initial price
       originalPrice: entry.sui.price, // Keep the original price
     },
     btc: {
-      price: (entry.btc.price / btcInitialPrice) * 100, // BTC as percentage of initial price
+      price: entry.btc.price / btcInitialPrice, // BTC as percentage of initial price
       originalPrice: entry.btc.price, // Keep the original price
     },
   }));

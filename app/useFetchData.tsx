@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { fetchDataAtom } from './store/fetchData/atom'
 import { dateToUnixTime, normalizeData } from './util'
 
-const fetchData = async (interval = '1d', startTime, endTime) => {
+const fetchData = async (interval, startTime, endTime) => {
   const params = { interval, startTime, endTime }
   const queryString = new URLSearchParams(params).toString()
   const res = await fetch(`/api/binance?${queryString}`).then((res) =>
@@ -32,7 +32,7 @@ const fetchData = async (interval = '1d', startTime, endTime) => {
 
 export const useFetchData = () => {
   const [data, setData] = useAtom(fetchDataAtom)
-  const fetchAndRefresh = async (interval = '1d', startTime, endTime) => {
+  const fetchAndRefresh = async (interval, startTime, endTime) => {
     const result = await fetchData(interval, startTime, endTime)
     setData(normalizeData(result))
   }

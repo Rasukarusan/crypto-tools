@@ -1,17 +1,11 @@
+import dayjs from 'dayjs'
 import { type NextRequest, NextResponse } from 'next/server'
-import { utcToJst } from '../../util'
+import { dateToUnixTime, utcToJst } from '../../util'
 
 // @see https://binance-docs.github.io/apidocs/spot/en/#kline-candlestick-data
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams
-  const interval = searchParams.get('interval')
-  const startTime = searchParams.get('startTime')
-  const endTime = searchParams.get('endTime')
-  // const limit = searchParams.get('limit')
-  console.log(interval)
-
   try {
-    const url = 'https://api.binance.com/api/v3/klines'
+    const searchParams = request.nextUrl.searchParams
     /**
      * Interval          Interval Value
      * ---------------------------------
@@ -25,8 +19,18 @@ export async function GET(request: NextRequest) {
     // const interval = '1d'
     // const startTime = dateToUnixTime('2023-08-01 00:00:00').toString()
     // const endTime = dateToUnixTime('2024-09-01 00:00:00').toString()
+    const interval = searchParams.get('interval') ?? '15m'
+    const startTime =
+      searchParams.get('startTime') ??
+      dateToUnixTime(
+        dayjs().subtract(1, 'd').format('YYYY-MM-DD HH:mm:ss'),
+      ).toString()
+    const endTime =
+      searchParams.get('endTime') ??
+      dateToUnixTime(dayjs().format('YYYY-MM-DD HH:mm:ss')).toString()
+    const limit = searchParams.get('limit') ?? '500'
+    const url = 'https://api.binance.com/api/v3/klines'
     const timeZone = '9'
-    const limit = '500'
     const data = {}
     const symbols = ['BTCUSDT', 'SUIUSDT']
     for (const symbol of symbols) {
@@ -40,7 +44,6 @@ export async function GET(request: NextRequest) {
       }
       const queryString = new URLSearchParams(queryParams).toString()
       const res = await fetch(`${url}?${queryString}`).then((res) => res.json())
-      console.log(`------${symbol}------`)
       data[symbol] = []
       for (const v of res) {
         const openTime = utcToJst(new Date(v[0]))

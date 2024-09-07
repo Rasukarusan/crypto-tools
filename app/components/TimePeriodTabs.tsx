@@ -33,7 +33,6 @@ export const TimePeriodTabs: React.FC<Props> = ({ onClick }) => {
                 ).toString()
                 break
               case '7D':
-                interval = '1d'
                 interval = '15m'
                 startTime = dateToUnixTime(
                   dayjs().subtract(7, 'd').format('YYYY-MM-DD HH:mm:ss'),
