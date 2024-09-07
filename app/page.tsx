@@ -2,8 +2,8 @@ import { Graph } from './components/Graph'
 
 export default function Page() {
   return (
-    <div style={{ width: '100%' }}>
-      <h1>Hello, Next.js!</h1>
+    <div className="p-8">
+      <h1 className="text-blue-700 font-bold text-3xl">Hello, Crypt!</h1>
       <Graph />
     </div>
   )

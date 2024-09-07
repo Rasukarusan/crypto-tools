@@ -82,7 +82,10 @@ export const Graph = () => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" />
+          <XAxis
+            dataKey="date"
+            tickFormatter={(date) => new Date(date).toLocaleDateString()}
+          />
           <YAxis />
           <Tooltip formatter={customTooltip} />
           <Legend />
