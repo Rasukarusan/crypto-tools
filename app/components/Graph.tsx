@@ -1,4 +1,5 @@
 'use client'
+import { isMobile } from 'react-device-detect'
 import {
   CartesianGrid,
   Legend,
@@ -15,7 +16,7 @@ import { TimePeriodTabs } from './TimePeriodTabs'
 export const Graph = () => {
   const { data } = useFetchData()
 
-  const customTooltip = (value, name, props) => {
+  const customTooltip = (_, name, props) => {
     return [`$${Number(props.payload[name].originalPrice).toFixed(2)}`, name]
   }
   const symbols = data && data.length > 0 && Object.keys(data[0]).slice(1)
@@ -38,7 +39,7 @@ export const Graph = () => {
           margin={{
             top: 5,
             right: 30,
-            left: 20,
+            left: isMobile ? -40 : 20,
             bottom: 5,
           }}
         >
@@ -47,7 +48,7 @@ export const Graph = () => {
             dataKey="date"
             tickFormatter={(date) => new Date(date).toLocaleDateString()}
           />
-          <YAxis domain={['auto', 'auto']} />
+          <YAxis domain={['auto', 'auto']} tick={!isMobile} />
           <Tooltip formatter={customTooltip} />
           <Legend />
           {symbols &&
