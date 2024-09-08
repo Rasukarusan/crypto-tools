@@ -29,7 +29,10 @@ export async function GET(request: NextRequest) {
       searchParams.get('endTime') ??
       dateToUnixTime(dayjs().format('YYYY-MM-DD HH:mm:ss')).toString()
     const limit = searchParams.get('limit') ?? '500'
-    const selectSymbols = searchParams.get('selectSymbols') ?? 'BTCUSDT,SUIUSDT'
+    const selectSymbols = searchParams.get('selectSymbols')
+    if (!selectSymbols) {
+      return NextResponse.json({ result: false, data: [] })
+    }
     const url = 'https://api.binance.com/api/v3/klines'
     const timeZone = '9'
     const data = {}

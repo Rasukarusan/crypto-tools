@@ -17,6 +17,9 @@ export const dateToUnixTime = (dateString) => {
 
 // Function to normalize the price data
 export const normalizeData = (data) => {
+  if (!data.length) {
+    return [];
+  }
   const symbols = Object.keys(data[0]).slice(1);
   return data.map((entry) => {
     const v = {};
