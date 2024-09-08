@@ -10,22 +10,19 @@ const fetchData = async (interval, startTime, endTime) => {
   const res = await fetch(`/api/binance?${queryString}`).then((res) =>
     res.json(),
   )
-  console.log(res)
   if (!res.result) {
     return []
   }
   const result = []
-  const dates = res.data.BTCUSDT.map((item) => item.date)
+  const symbols = Object.keys(res.data)
+  const dates = res.data[symbols[0]].map((item) => item.date)
   dates.forEach((date, index) => {
-    result.push({
-      date,
-      sui: {
-        price: res.data.SUIUSDT[index].price,
-      },
-      btc: {
-        price: res.data.BTCUSDT[index].price,
-      },
-    })
+    const v = { date }
+    for (const symbol of symbols) {
+      v[symbol] = {}
+      v[symbol].price = res.data[symbol][index].price
+    }
+    result.push(v)
   })
   return result
 }

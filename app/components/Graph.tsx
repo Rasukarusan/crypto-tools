@@ -16,20 +16,10 @@ export const Graph = () => {
   const { data } = useFetchData()
 
   const customTooltip = (value, name, props) => {
-    if (name === 'SUI') {
-      return [
-        `$${Number(props.payload.sui.originalPrice).toFixed(2)}`,
-        'SUI Price',
-      ]
-    }
-    if (name === 'BTC') {
-      return [
-        `$${Number(props.payload.btc.originalPrice).toFixed(2)}`,
-        'BTC Price',
-      ]
-    }
-    return [value, name]
+    return [`$${Number(props.payload[name].originalPrice).toFixed(2)}`, name]
   }
+  const symbols = data && data.length > 0 && Object.keys(data[0]).slice(1)
+  const colors = ['#82ca9d', '#8884d8']
 
   return (
     <div className="h-[500px] mx-auto">
@@ -60,20 +50,17 @@ export const Graph = () => {
           <YAxis domain={['auto', 'auto']} />
           <Tooltip formatter={customTooltip} />
           <Legend />
-          <Line
-            type="monotone"
-            dataKey="sui.price"
-            stroke="#8884d8"
-            name="SUI"
-            dot={false}
-          />
-          <Line
-            type="monotone"
-            dataKey="btc.price"
-            stroke="#82ca9d"
-            name="BTC"
-            dot={false}
-          />
+          {symbols &&
+            symbols?.map((symbol, i) => (
+              <Line
+                key={symbol}
+                type="monotone"
+                dataKey={`${symbol}.price`}
+                stroke={colors[i]}
+                name={symbol}
+                dot={false}
+              />
+            ))}
         </LineChart>
       </ResponsiveContainer>
     </div>

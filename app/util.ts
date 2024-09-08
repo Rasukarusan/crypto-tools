@@ -17,18 +17,19 @@ export const dateToUnixTime = (dateString) => {
 
 // Function to normalize the price data
 export const normalizeData = (data) => {
-  const suiInitialPrice = data[0].sui.price;
-  const btcInitialPrice = data[0].btc.price;
-
-  return data.map((entry) => ({
-    date: entry.date,
-    sui: {
-      price: entry.sui.price / suiInitialPrice, // SUI as percentage of initial price
-      originalPrice: entry.sui.price, // Keep the original price
-    },
-    btc: {
-      price: entry.btc.price / btcInitialPrice, // BTC as percentage of initial price
-      originalPrice: entry.btc.price, // Keep the original price
-    },
-  }));
+  const symbols = Object.keys(data[0]).slice(1);
+  return data.map((entry) => {
+    const v = {};
+    for (const symbol of symbols) {
+      const initialPrice = data[0][symbol].price;
+      v[symbol] = {};
+      v[symbol].price = entry[symbol].price / initialPrice;
+      v[symbol].originalPrice = entry[symbol].price;
+    }
+    const result = {
+      date: entry.date,
+      ...v,
+    };
+    return result;
+  });
 };
