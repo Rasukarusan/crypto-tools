@@ -21,7 +21,11 @@ export const Graph = () => {
   const { data, setData } = useFetchData()
 
   const customTooltip = (_, name, props) => {
-    return [`$${Number(props.payload[name].originalPrice).toFixed(2)}`, name]
+    const ratio = (props.payload[name].price - 1) * 100
+    const ratioLabel =
+      ratio > 0 ? `+${ratio.toFixed(2)}%` : `${ratio.toFixed(2)}%`
+    const price = Number(props.payload[name].originalPrice).toFixed(2)
+    return [`$${price}(${ratioLabel})`, name]
   }
   const symbols = data && data.length > 0 && Object.keys(data[0]).slice(1)
   const colors = ['#82ca9d', '#8884d8']
