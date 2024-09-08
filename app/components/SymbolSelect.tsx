@@ -27,7 +27,7 @@ export const SymbolSelect: React.FC = () => {
         options={options}
         isMulti={true}
         defaultValue={selectSymbols}
-        onChange={(e: SelectSymbols[]) => {
+        onChange={(e: SelectSymbols) => {
           setSelectSymbols(e)
         }}
       />
