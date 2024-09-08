@@ -1,11 +1,12 @@
 import dayjs from 'dayjs'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import { fetchDataAtom } from './store/fetchData/atom'
+import { selectSymbolsAtom } from './store/selectSymbols/atom'
 import { dateToUnixTime, normalizeData } from './util'
 
-const fetchData = async (interval, startTime, endTime) => {
-  const params = { interval, startTime, endTime }
+const fetchData = async (interval, startTime, endTime, selectSymbols) => {
+  const params = { interval, startTime, endTime, selectSymbols }
   const queryString = new URLSearchParams(params).toString()
   const res = await fetch(`/api/binance?${queryString}`).then((res) =>
     res.json(),
@@ -29,8 +30,9 @@ const fetchData = async (interval, startTime, endTime) => {
 
 export const useFetchData = () => {
   const [data, setData] = useAtom(fetchDataAtom)
-  const fetchAndRefresh = async (interval, startTime, endTime) => {
-    const result = await fetchData(interval, startTime, endTime)
+  const selectSymbols = useAtomValue(selectSymbolsAtom)
+  const fetchAndRefresh = async (interval, startTime, endTime, symbols) => {
+    const result = await fetchData(interval, startTime, endTime, symbols)
     setData(normalizeData(result))
   }
   useEffect(() => {
@@ -42,8 +44,10 @@ export const useFetchData = () => {
       const endTime = dateToUnixTime(
         dayjs().format('YYYY-MM-DD HH:mm:ss'),
       ).toString()
-      await fetchAndRefresh(interval, startTime, endTime)
+      const symbols = selectSymbols.map((symbol) => symbol.value).join(',')
+      console.log(selectSymbols, symbols)
+      await fetchAndRefresh(interval, startTime, endTime, symbols)
     })()
-  }, [])
+  }, [selectSymbols])
   return { data, fetchData: fetchAndRefresh }
 }

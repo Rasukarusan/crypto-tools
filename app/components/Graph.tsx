@@ -25,8 +25,8 @@ export const Graph = () => {
 
   return (
     <div className="h-[500px] mx-auto">
-      <div className="mb-8 flex justify-end items-center">
-        <div className="mr-4 min-w-[200px] w-auto">
+      <div className="mb-4 block sm:flex justify-end items-center">
+        <div className="mb-4 sm:mb-0 sm:mr-4 min-w-[250px] w-auto">
           <SymbolSelect />
         </div>
         <TimePeriodTabs

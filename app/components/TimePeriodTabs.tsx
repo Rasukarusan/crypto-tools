@@ -1,5 +1,7 @@
 import dayjs from 'dayjs'
+import { useAtomValue } from 'jotai'
 import { useState } from 'react'
+import { selectSymbolsAtom } from '../store/selectSymbols/atom'
 import { useFetchData } from '../useFetchData'
 import { dateToUnixTime } from '../util'
 
@@ -11,6 +13,9 @@ export const TimePeriodTabs: React.FC<Props> = ({ onClick }) => {
   const [selectedTab, setSelectedTab] = useState('1D')
   const tabs = ['1D', '7D', '1M', '1Y']
   const { fetchData } = useFetchData()
+  const selectSymbols = useAtomValue(selectSymbolsAtom)
+    .map((symbol) => symbol.label)
+    .join(',')
 
   return (
     <div className="flex items-center space-x-4 bg-gray-100 p-2 rounded-md">
@@ -55,9 +60,9 @@ export const TimePeriodTabs: React.FC<Props> = ({ onClick }) => {
               }
               default:
             }
-            await fetchData(interval, startTime, endTime)
+            await fetchData(interval, startTime, endTime, selectSymbols)
           }}
-          className={`px-4 py-2 rounded-md font-medium text-gray-600 hover:bg-gray-200 focus:outline-none ${
+          className={`px-4 py-1 rounded-md font-medium text-gray-600 hover:bg-gray-200 focus:outline-none ${
             selectedTab === tab ? 'bg-white shadow-md' : ''
           }`}
         >

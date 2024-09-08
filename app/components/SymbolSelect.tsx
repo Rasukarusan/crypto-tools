@@ -1,12 +1,15 @@
 import { useAtom } from 'jotai'
 import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
-import { type SelectSymbol, selectSymbolAtom } from '../store/selectSymbol/atom'
+import {
+  type SelectSymbols,
+  selectSymbolsAtom,
+} from '../store/selectSymbols/atom'
 const Select = dynamic(() => import('react-select'), { ssr: false })
 
 export const SymbolSelect: React.FC = () => {
   const [options, setOptions] = useState([])
-  const [selectSymbol, setSelectSymbol] = useAtom(selectSymbolAtom)
+  const [selectSymbols, setSelectSymbols] = useAtom(selectSymbolsAtom)
 
   useEffect(() => {
     ;(async () => {
@@ -23,9 +26,9 @@ export const SymbolSelect: React.FC = () => {
       <Select
         options={options}
         isMulti={true}
-        defaultValue={selectSymbol}
-        onChange={(e: SelectSymbol[]) => {
-          setSelectSymbol(e)
+        defaultValue={selectSymbols}
+        onChange={(e: SelectSymbols[]) => {
+          setSelectSymbols(e)
         }}
       />
     </div>
