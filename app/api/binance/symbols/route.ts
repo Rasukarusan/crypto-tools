@@ -6,7 +6,10 @@ export async function GET(request: NextRequest) {
 
   try {
     const url = 'https://api.binance.com/api/v3/exchangeInfo'
-    const res = await fetch(url).then((res) => res.json())
+    const res = await fetch(url).then((res) => {
+      console.log(res)
+      return res.json()
+    })
     const symbols = res.symbols
       .map((symbol) => symbol.symbol)
       .filter((v) => v?.includes(currency))
