@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     const res = await fetch(url).then((res) => res.json())
     const symbols = res.symbols
       .map((symbol) => symbol.symbol)
-      .filter((v) => v.includes(currency))
+      .filter((v) => v?.includes(currency))
     console.log(symbols)
     return NextResponse.json({ result: true, symbols })
   } catch (e) {

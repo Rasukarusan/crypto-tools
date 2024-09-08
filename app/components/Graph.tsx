@@ -11,6 +11,7 @@ import {
   YAxis,
 } from 'recharts'
 import { useFetchData } from '../useFetchData'
+import { SymbolSelect } from './SymbolSelect'
 import { TimePeriodTabs } from './TimePeriodTabs'
 
 export const Graph = () => {
@@ -24,7 +25,10 @@ export const Graph = () => {
 
   return (
     <div className="h-[500px] mx-auto">
-      <div className="mb-8">
+      <div className="mb-8 flex justify-end items-center">
+        <div className="mr-4 min-w-[200px] w-auto">
+          <SymbolSelect />
+        </div>
         <TimePeriodTabs
           onClick={async () => {
             console.log('hoge')

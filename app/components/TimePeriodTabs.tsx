@@ -13,7 +13,7 @@ export const TimePeriodTabs: React.FC<Props> = ({ onClick }) => {
   const { fetchData } = useFetchData()
 
   return (
-    <div className="flex items-center space-x-4 bg-gray-100 p-2 rounded-md mx-auto">
+    <div className="flex items-center space-x-4 bg-gray-100 p-2 rounded-md">
       {tabs.map((tab) => (
         <button
           type="button"
