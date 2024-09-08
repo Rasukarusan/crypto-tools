@@ -1,9 +1,9 @@
-import dayjs from 'dayjs'
 import { useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import { fetchDataAtom } from './store/fetchData/atom'
 import { selectSymbolsAtom } from './store/selectSymbols/atom'
-import { dateToUnixTime, normalizeData } from './util'
+import { selectTabAtom } from './store/selectTimePeriod/atom'
+import { getIntervalFromTab, normalizeData } from './util'
 
 const fetchData = async (interval, startTime, endTime, selectSymbols) => {
   const params = { interval, startTime, endTime, selectSymbols }
@@ -31,23 +31,19 @@ const fetchData = async (interval, startTime, endTime, selectSymbols) => {
 export const useFetchData = () => {
   const [data, setData] = useAtom(fetchDataAtom)
   const selectSymbols = useAtomValue(selectSymbolsAtom)
+  const selectTab = useAtomValue(selectTabAtom)
+
   const fetchAndRefresh = async (interval, startTime, endTime, symbols) => {
     const result = await fetchData(interval, startTime, endTime, symbols)
     setData(normalizeData(result))
   }
+
   useEffect(() => {
     ;(async () => {
-      const interval = '15m'
-      const startTime = dateToUnixTime(
-        dayjs().subtract(1, 'd').format('YYYY-MM-DD HH:mm:ss'),
-      ).toString()
-      const endTime = dateToUnixTime(
-        dayjs().format('YYYY-MM-DD HH:mm:ss'),
-      ).toString()
+      const { interval, startTime, endTime } = getIntervalFromTab(selectTab)
       const symbols = selectSymbols.map((symbol) => symbol.value).join(',')
-      console.log(selectSymbols, symbols)
       await fetchAndRefresh(interval, startTime, endTime, symbols)
     })()
-  }, [selectSymbols])
+  }, [selectSymbols, selectTab])
   return { data, fetchData: fetchAndRefresh }
 }

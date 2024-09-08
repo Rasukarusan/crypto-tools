@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
         data[symbol].push({ date: openTime, price: openPrice })
       }
     }
-    console.log(data)
+    // console.log(data)
     return NextResponse.json({ result: true, data })
   } catch (e) {
     console.error(e)
