@@ -1,5 +1,5 @@
 import { useAtom } from 'jotai'
-import { selectTabAtom } from '../store/selectTimePeriod/atom'
+import { selectTabAtom } from '../store/selectTab/atom'
 
 interface Props {
   onClick: () => void

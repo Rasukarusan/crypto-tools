@@ -2,7 +2,7 @@ import { useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import { fetchDataAtom } from './store/fetchData/atom'
 import { selectSymbolsAtom } from './store/selectSymbols/atom'
-import { selectTabAtom } from './store/selectTimePeriod/atom'
+import { selectTabAtom } from './store/selectTab/atom'
 import { getIntervalFromTab, normalizeData } from './util'
 
 const fetchData = async (interval, startTime, endTime, selectSymbols) => {
