@@ -1,5 +1,6 @@
 'use client'
 import dayjs from 'dayjs'
+import isBetween from 'dayjs/plugin/isBetween'
 import { useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import {
@@ -16,6 +17,7 @@ import {
 import { useFetchData } from '../useFetchData'
 import { SymbolSelect } from './SymbolSelect'
 import { TimePeriodTabs } from './TimePeriodTabs'
+dayjs.extend(isBetween)
 
 export const Graph = () => {
   const { data, setData } = useFetchData()
@@ -28,9 +30,18 @@ export const Graph = () => {
     return [`$${price}(${ratioLabel})`, name]
   }
   const symbols = data && data.length > 0 && Object.keys(data[0]).slice(1)
-  const colors = ['#82ca9d', '#8884d8']
+  const colors = [
+    '#82ca9d',
+    '#8884d8',
+    '#CB80AB',
+    '#E6D9A2',
+    '#FFBE98',
+    '#F05A7E',
+    '#125B9A',
+    '#0B8494',
+  ]
 
-  const [zoomArea, setZoomArea] = useState({ left: null, right: null })
+  const [zoomArea, setZoomArea] = useState({ left: '', right: '' })
 
   return (
     <div className="h-[500px] mx-auto">
@@ -38,7 +49,7 @@ export const Graph = () => {
         <button
           type="button"
           onClick={() => {
-            setZoomArea({ left: null, right: null })
+            setZoomArea({ left: '', right: '' })
           }}
         >
           reset
@@ -72,7 +83,7 @@ export const Graph = () => {
           onMouseUp={() => {
             let { left, right } = zoomArea
             if (!left || !right || left === right) {
-              setZoomArea({ left: null, right: null })
+              setZoomArea({ left: '', right: '' })
               return
             }
             // 右から左に向けて選択した場合、left:未来, right: 過去となってしまうので入れ替える
@@ -81,9 +92,8 @@ export const Graph = () => {
               left = right
               right = temp
             }
-            const newData = data.filter(
-              (v) =>
-                dayjs(v.date).isAfter(left) && dayjs(v.date).isBefore(right),
+            const newData = data.filter((v) =>
+              dayjs(v.date).isBetween(left, right, null, '[]'),
             )
             setData(newData)
           }}
