@@ -45,5 +45,5 @@ export const useFetchData = () => {
       await fetchAndRefresh(interval, startTime, endTime, symbols)
     })()
   }, [selectSymbols, selectTab])
-  return { data, fetchData: fetchAndRefresh }
+  return { data, setData, fetchData: fetchAndRefresh }
 }
