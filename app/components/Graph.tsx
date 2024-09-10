@@ -1,6 +1,7 @@
 'use client'
 import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
+import { useAtom } from 'jotai'
 import { useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import {
@@ -14,13 +15,17 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
+import { searchParamsAtom } from '../store/searchParams/atom'
 import { useFetchData } from '../useFetchData'
+import { dateToUnixTime } from '../util'
 import { SymbolSelect } from './SymbolSelect'
 import { TimePeriodTabs } from './TimePeriodTabs'
 dayjs.extend(isBetween)
 
 export const Graph = () => {
-  const { data, setData } = useFetchData()
+  const { data } = useFetchData()
+  const [searchParams, setSearchParams] = useAtom(searchParamsAtom)
+  const [zoomArea, setZoomArea] = useState({ left: '', right: '' })
 
   const customTooltip = (_, name, props) => {
     const ratio = (props.payload[name].price - 1) * 100
@@ -29,7 +34,6 @@ export const Graph = () => {
     const price = Number(props.payload[name].originalPrice).toFixed(2)
     return [`$${price}(${ratioLabel})`, name]
   }
-  const symbols = data && data.length > 0 && Object.keys(data[0]).slice(1)
   const colors = [
     '#82ca9d',
     '#8884d8',
@@ -40,8 +44,6 @@ export const Graph = () => {
     '#125B9A',
     '#0B8494',
   ]
-
-  const [zoomArea, setZoomArea] = useState({ left: '', right: '' })
 
   return (
     <div className="h-[500px] mx-auto">
@@ -80,7 +82,7 @@ export const Graph = () => {
           onMouseMove={(e) => {
             setZoomArea({ ...zoomArea, right: e.activeLabel })
           }}
-          onMouseUp={() => {
+          onMouseUp={(e) => {
             let { left, right } = zoomArea
             if (!left || !right || left === right) {
               setZoomArea({ left: '', right: '' })
@@ -92,10 +94,13 @@ export const Graph = () => {
               left = right
               right = temp
             }
-            const newData = data.filter((v) =>
-              dayjs(v.date).isBetween(left, right, null, '[]'),
-            )
-            setData(newData)
+            // TODO:選択した日付幅によってintervalを変える
+            setSearchParams({
+              ...searchParams,
+              startTime: dateToUnixTime(left).toString(),
+              endTime: dateToUnixTime(right).toString(),
+            })
+            setZoomArea({ left: '', right: '' })
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
@@ -112,18 +117,17 @@ export const Graph = () => {
           />
           <Tooltip formatter={customTooltip} />
           <Legend />
-          {symbols &&
-            symbols?.map((symbol, i) => (
-              <Line
-                yAxisId="1"
-                key={symbol}
-                type="monotone"
-                dataKey={`${symbol}.price`}
-                stroke={colors[i]}
-                name={symbol}
-                dot={false}
-              />
-            ))}
+          {searchParams.symbols.split(',')?.map((symbol, i) => (
+            <Line
+              yAxisId="1"
+              key={symbol}
+              type="monotone"
+              dataKey={`${symbol}.price`}
+              stroke={colors[i]}
+              name={symbol}
+              dot={false}
+            />
+          ))}
           {zoomArea.left && zoomArea.right ? (
             <ReferenceArea
               yAxisId="1"
