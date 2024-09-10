@@ -1,9 +1,8 @@
 import { useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import { fetchDataAtom } from './store/fetchData/atom'
-import { selectSymbolsAtom } from './store/selectSymbols/atom'
-import { selectTabAtom } from './store/selectTab/atom'
-import { getIntervalFromTab, normalizeData } from './util'
+import { searchParamsAtom } from './store/searchParams/atom'
+import { normalizeData } from './util'
 
 const fetchData = async (interval, startTime, endTime, selectSymbols) => {
   const params = { interval, startTime, endTime, selectSymbols }
@@ -30,8 +29,7 @@ const fetchData = async (interval, startTime, endTime, selectSymbols) => {
 
 export const useFetchData = () => {
   const [data, setData] = useAtom(fetchDataAtom)
-  const selectSymbols = useAtomValue(selectSymbolsAtom)
-  const selectTab = useAtomValue(selectTabAtom)
+  const searchParams = useAtomValue(searchParamsAtom)
 
   const fetchAndRefresh = async (interval, startTime, endTime, symbols) => {
     const result = await fetchData(interval, startTime, endTime, symbols)
@@ -40,10 +38,9 @@ export const useFetchData = () => {
 
   useEffect(() => {
     ;(async () => {
-      const { interval, startTime, endTime } = getIntervalFromTab(selectTab)
-      const symbols = selectSymbols.map((symbol) => symbol.value).join(',')
+      const { interval, startTime, endTime, symbols } = searchParams
       await fetchAndRefresh(interval, startTime, endTime, symbols)
     })()
-  }, [selectSymbols, selectTab])
+  }, [searchParams])
   return { data, setData, fetchData: fetchAndRefresh }
 }

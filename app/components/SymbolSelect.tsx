@@ -1,15 +1,14 @@
 import { useAtom } from 'jotai'
 import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
-import {
-  type SelectSymbols,
-  selectSymbolsAtom,
-} from '../store/selectSymbols/atom'
+import { searchParamsAtom } from '../store/searchParams/atom'
+import type { SelectSymbols } from '../store/selectSymbols/atom'
+
 const Select = dynamic(() => import('react-select'), { ssr: false })
 
 export const SymbolSelect: React.FC = () => {
   const [options, setOptions] = useState([])
-  const [selectSymbols, setSelectSymbols] = useAtom(selectSymbolsAtom)
+  const [searchParams, setSearchParams] = useAtom(searchParamsAtom)
 
   useEffect(() => {
     ;(async () => {
@@ -26,9 +25,14 @@ export const SymbolSelect: React.FC = () => {
       <Select
         options={options}
         isMulti={true}
-        defaultValue={selectSymbols}
+        defaultValue={searchParams.symbols
+          .split(',')
+          .map((symbol) => ({ label: symbol, value: symbol }))}
         onChange={(e: SelectSymbols) => {
-          setSelectSymbols(e)
+          setSearchParams({
+            ...searchParams,
+            symbols: e.map((symbol) => symbol.value).join(','),
+          })
         }}
       />
     </div>
