@@ -2,7 +2,6 @@ import { useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import { fetchDataAtom } from './store/fetchData/atom'
 import { searchParamsAtom } from './store/searchParams/atom'
-import { normalizeData } from './util'
 
 const fetchData = async (interval, startTime, endTime, selectSymbols) => {
   const params = { interval, startTime, endTime, selectSymbols }
@@ -20,7 +19,9 @@ const fetchData = async (interval, startTime, endTime, selectSymbols) => {
     const v = { date }
     for (const symbol of symbols) {
       v[symbol] = {}
-      v[symbol].price = res.data[symbol][index].price
+      const initialPrice = res.data[symbol][0].price
+      v[symbol].originalPrice = res.data[symbol][index].price
+      v[symbol].price = res.data[symbol][index].price / initialPrice // 開始日から何％動いているかを表す値
     }
     result.push(v)
   })
@@ -33,7 +34,7 @@ export const useFetchData = () => {
 
   const fetchAndRefresh = async (interval, startTime, endTime, symbols) => {
     const result = await fetchData(interval, startTime, endTime, symbols)
-    setData(normalizeData(result))
+    setData(result)
   }
 
   useEffect(() => {
