@@ -45,6 +45,9 @@ export const Graph = () => {
     '#0B8494',
   ]
 
+  // 通貨を追加した時に、追加した分だけ差分描画させるために、searchParams.symbolsを使わずdataから取得している
+  const symbols = data && data.length > 0 && Object.keys(data[0]).slice(1)
+
   return (
     <div className="h-[500px] mx-auto">
       <div className="mb-4 block sm:flex justify-end items-center">
@@ -117,17 +120,18 @@ export const Graph = () => {
           />
           <Tooltip formatter={customTooltip} />
           <Legend />
-          {searchParams.symbols.split(',')?.map((symbol, i) => (
-            <Line
-              yAxisId="1"
-              key={symbol}
-              type="monotone"
-              dataKey={`${symbol}.price`}
-              stroke={colors[i]}
-              name={symbol}
-              dot={false}
-            />
-          ))}
+          {symbols &&
+            symbols.map((symbol, i) => (
+              <Line
+                yAxisId="1"
+                key={symbol}
+                type="monotone"
+                dataKey={`${symbol}.price`}
+                stroke={colors[i]}
+                name={symbol}
+                dot={false}
+              />
+            ))}
           {zoomArea.left && zoomArea.right ? (
             <ReferenceArea
               yAxisId="1"
