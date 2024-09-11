@@ -10,10 +10,11 @@ interface SearchParams {
 }
 
 const format = 'YYYY-MM-DD HH:mm:ss'
-
-export const searchParamsAtom = atom<SearchParams>({
+const initialSearchParams = {
   interval: '15m',
   startTime: dateToUnixTime(dayjs().subtract(1, 'd').format(format)).toString(),
   endTime: dateToUnixTime(dayjs().format(format)).toString(),
-  symbols: 'BTCUSDT,SUIUSDT',
-})
+  symbols: 'BTCUSDT,SUIUSDT,SOLUSDT',
+}
+
+export const searchParamsAtom = atom<SearchParams>(initialSearchParams)

@@ -24,6 +24,7 @@
     "typescript": "5.5.4"
   },
   "dependencies": {
+    "ahooks": "^3.8.1",
     "dayjs": "^1.11.13",
     "dotenv": "^16.4.5",
     "jotai": "^2.9.3",

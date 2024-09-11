@@ -1,6 +1,7 @@
+import { useAsyncEffect } from 'ahooks'
 import { useAtom } from 'jotai'
 import dynamic from 'next/dynamic'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { searchParamsAtom } from '../store/searchParams/atom'
 
 const Select = dynamic(() => import('react-select'), { ssr: false })
@@ -10,19 +11,18 @@ interface SelectedSymbol {
   value: string
 }
 
-export const SymbolSelect: React.FC = () => {
+export const SymbolSelect = () => {
   const [options, setOptions] = useState([])
   const [searchParams, setSearchParams] = useAtom(searchParamsAtom)
 
-  useEffect(() => {
-    ;(async () => {
-      const res = await fetch('/api/binance/symbols').then((res) => res.json())
-      if (!res.result) {
-        return []
-      }
-      const newOptions = res.symbols.map((v) => ({ value: v, label: v }))
-      setOptions(newOptions)
-    })()
+  useAsyncEffect(async () => {
+    const res = await fetch('/api/binance/symbols').then((res) => res.json())
+    if (!res.result) {
+      setOptions([])
+      return
+    }
+    const newOptions = res.symbols.map((v) => ({ value: v, label: v }))
+    setOptions(newOptions)
   }, [])
   return (
     <div>
