@@ -18,10 +18,10 @@ const fetchData = async (interval, startTime, endTime, selectSymbols) => {
   dates.forEach((date, index) => {
     const v = { date }
     for (const symbol of symbols) {
-      v[symbol] = { price: 0, originalPrice: 0 }
+      v[symbol] = { price: 0, priceChangeRatio: 0 }
       const initialPrice = res.data[symbol][0].price
-      v[symbol].originalPrice = res.data[symbol][index].price
-      v[symbol].price = res.data[symbol][index].price / initialPrice // 開始日から何％動いているかを表す値
+      v[symbol].price = res.data[symbol][index].price
+      v[symbol].priceChangeRatio = res.data[symbol][index].price / initialPrice // 開始日から何％動いているかを表す値
     }
     result.push(v)
   })

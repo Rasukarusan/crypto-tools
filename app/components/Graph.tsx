@@ -28,10 +28,10 @@ export const Graph = () => {
   const [zoomArea, setZoomArea] = useState({ left: '', right: '' })
 
   const customTooltip = (_, name, props) => {
-    const ratio = (props.payload[name].price - 1) * 100
+    const ratio = (props.payload[name].priceChangeRatio - 1) * 100
     const ratioLabel =
       ratio > 0 ? `+${ratio.toFixed(2)}%` : `${ratio.toFixed(2)}%`
-    const price = Number(props.payload[name].originalPrice).toFixed(2)
+    const price = Number(props.payload[name].price).toFixed(2)
     return [`$${price}(${ratioLabel})`, name]
   }
   const colors = [
@@ -54,11 +54,7 @@ export const Graph = () => {
         <div className="mb-4 sm:mb-0 sm:mr-4 min-w-[250px] w-auto">
           <SymbolSelect />
         </div>
-        <TimePeriodTabs
-          onClick={async () => {
-            console.log('hoge')
-          }}
-        />
+        <TimePeriodTabs onClick={async () => {}} />
       </div>
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
@@ -118,7 +114,7 @@ export const Graph = () => {
                 yAxisId="1"
                 key={symbol}
                 type="monotone"
-                dataKey={`${symbol}.price`}
+                dataKey={`${symbol}.priceChangeRatio`}
                 stroke={colors[i]}
                 name={symbol}
                 dot={false}
