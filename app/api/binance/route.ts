@@ -2,6 +2,8 @@ import dayjs from 'dayjs'
 import { type NextRequest, NextResponse } from 'next/server'
 import { dateToUnixTime, utcToJst } from '../../util'
 
+const ENDPOINT = 'https://api.binance.com/api/v3'
+
 // @see https://binance-docs.github.io/apidocs/spot/en/#kline-candlestick-data
 export async function GET(request: NextRequest) {
   try {
@@ -33,11 +35,11 @@ export async function GET(request: NextRequest) {
     if (!selectSymbols) {
       return NextResponse.json({ result: false, data: [] })
     }
-    const url = 'https://api.binance.com/api/v3/klines'
     const timeZone = '9'
-    const data = {}
     const symbols = selectSymbols.split(',')
-    for (const symbol of symbols) {
+
+    // 指定期間の価格を取得
+    const getPrices = async (symbol, prices) => {
       const queryParams = {
         symbol,
         interval,
@@ -47,16 +49,25 @@ export async function GET(request: NextRequest) {
         limit,
       }
       const queryString = new URLSearchParams(queryParams).toString()
-      const res = await fetch(`${url}?${queryString}`).then((res) => res.json())
-      data[symbol] = []
+      // 価格
+      const res = await fetch(`${ENDPOINT}/klines?${queryString}`).then((res) =>
+        res.json(),
+      )
+      prices[symbol] = []
       for (const v of res) {
         const openTime = utcToJst(new Date(v[0]))
         const openPrice = v[1]
-        data[symbol].push({ date: openTime, price: openPrice })
+        prices[symbol].push({ date: openTime, price: openPrice })
       }
+      return prices
     }
-    // console.log(data)
-    return NextResponse.json({ result: true, data })
+
+    const prices = {}
+    for (const symbol of symbols) {
+      await getPrices(symbol, prices)
+    }
+
+    return NextResponse.json({ result: true, prices })
   } catch (e) {
     console.error(e)
     return NextResponse.json({ result: false })
