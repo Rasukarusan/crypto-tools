@@ -18,18 +18,14 @@ export async function GET(request: NextRequest) {
      * weeks             1w
      * months            1M
      */
-    // const interval = '1d'
-    // const startTime = dateToUnixTime('2023-08-01 00:00:00').toString()
-    // const endTime = dateToUnixTime('2024-09-01 00:00:00').toString()
     const interval = searchParams.get('interval') ?? '15m'
-    const startTime =
+    const start =
       searchParams.get('startTime') ??
-      dateToUnixTime(
-        dayjs().subtract(1, 'd').format('YYYY-MM-DD HH:mm:ss'),
-      ).toString()
-    const endTime =
-      searchParams.get('endTime') ??
-      dateToUnixTime(dayjs().format('YYYY-MM-DD HH:mm:ss')).toString()
+      dayjs().subtract(1, 'd').format('YYYY-MM-DD HH:mm:ss')
+    const end =
+      searchParams.get('endTime') ?? dayjs().format('YYYY-MM-DD HH:mm:ss')
+    const startTime = dateToUnixTime(start).toString()
+    const endTime = dateToUnixTime(end).toString()
     const limit = searchParams.get('limit') ?? '500'
     const selectSymbols = searchParams.get('selectSymbols')
     if (!selectSymbols) {

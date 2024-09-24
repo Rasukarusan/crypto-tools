@@ -2,7 +2,6 @@ import dayjs from 'dayjs'
 import { useAtom } from 'jotai'
 import { useState } from 'react'
 import { searchParamsAtom } from '../store/searchParams/atom'
-import { dateToUnixTime } from '../util'
 
 type Tab = '1D' | '7D' | '1M' | '1Y'
 
@@ -12,7 +11,7 @@ interface Interval {
   endTime: string
 }
 
-export const TimePeriodTabs= () => {
+export const TimePeriodTabs = () => {
   const tabs: Tab[] = ['1D', '7D', '1M', '1Y']
   const [selectedTab, setSelectedTab] = useState<Tab>('1D')
   const [searchParams, setSearchParams] = useAtom(searchParamsAtom)
@@ -20,35 +19,27 @@ export const TimePeriodTabs= () => {
   const getIntervalFromTab = (tab: Tab): Interval => {
     const format = 'YYYY-MM-DD HH:mm:ss'
     let interval = '15m'
-    let startTime = dateToUnixTime(dayjs().format(format)).toString()
-    const endTime = dateToUnixTime(dayjs().format(format)).toString()
+    let startTime = dayjs().format(format)
+    const endTime = dayjs().format(format)
     switch (tab) {
       case '1D': {
         interval = '15m'
-        startTime = dateToUnixTime(
-          dayjs().subtract(1, 'd').format(format),
-        ).toString()
+        startTime = dayjs().subtract(1, 'd').format(format)
         break
       }
       case '7D': {
         interval = '15m'
-        startTime = dateToUnixTime(
-          dayjs().subtract(7, 'd').format(format),
-        ).toString()
+        startTime = dayjs().subtract(7, 'd').format(format)
         break
       }
       case '1M': {
         interval = '1h'
-        startTime = dateToUnixTime(
-          dayjs().subtract(1, 'M').format(format),
-        ).toString()
+        startTime = dayjs().subtract(1, 'M').format(format)
         break
       }
       case '1Y': {
         interval = '1d'
-        startTime = dateToUnixTime(
-          dayjs().subtract(1, 'y').format(format),
-        ).toString()
+        startTime = dayjs().subtract(1, 'y').format(format)
         break
       }
       default:
