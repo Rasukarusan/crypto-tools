@@ -4,10 +4,6 @@ import { useState } from 'react'
 import { searchParamsAtom } from '../store/searchParams/atom'
 import { dateToUnixTime } from '../util'
 
-interface Props {
-  onClick: () => void
-}
-
 type Tab = '1D' | '7D' | '1M' | '1Y'
 
 interface Interval {
@@ -16,7 +12,7 @@ interface Interval {
   endTime: string
 }
 
-export const TimePeriodTabs: React.FC<Props> = ({ onClick }) => {
+export const TimePeriodTabs= () => {
   const tabs: Tab[] = ['1D', '7D', '1M', '1Y']
   const [selectedTab, setSelectedTab] = useState<Tab>('1D')
   const [searchParams, setSearchParams] = useAtom(searchParamsAtom)

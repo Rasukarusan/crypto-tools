@@ -19,6 +19,7 @@ import { searchParamsAtom } from '../store/searchParams/atom'
 import { useFetchData } from '../useFetchData'
 import { dateToUnixTime } from '../util'
 import { SymbolSelect } from './SymbolSelect'
+import { TimePeriodCalendar } from './TimePeriodCalender'
 import { TimePeriodTabs } from './TimePeriodTabs'
 dayjs.extend(isBetween)
 
@@ -51,10 +52,13 @@ export const Graph = () => {
   return (
     <div className="h-[500px] mx-auto">
       <div className="mb-4 block sm:flex justify-end items-center">
+        <div className="mr-4">
+          <TimePeriodCalendar />
+        </div>
         <div className="mb-4 sm:mb-0 sm:mr-4 min-w-[250px] w-auto">
           <SymbolSelect />
         </div>
-        <TimePeriodTabs onClick={async () => {}} />
+        <TimePeriodTabs />
       </div>
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
