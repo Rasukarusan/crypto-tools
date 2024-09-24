@@ -10,7 +10,6 @@ export const TimePeriodCalendar: React.FC = () => {
     HTMLInputElement,
     React.InputHTMLAttributes<HTMLInputElement>
   >((props, ref) => {
-    console.log(props)
     return (
       <input type="text" ref={ref} {...props} className="border p-1 w-28" />
     )
