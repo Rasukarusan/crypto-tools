@@ -52,7 +52,7 @@ export const USAMarkets = () => {
             margin={{
               top: 5,
               right: 30,
-              left: isMobile ? -40 : 20,
+              left: isMobile ? -10 : 20,
               bottom: 5,
             }}
           >
@@ -62,12 +62,8 @@ export const USAMarkets = () => {
               dataKey="date"
               tickFormatter={(date) => new Date(date).toLocaleDateString()}
             />
-            <YAxis
-              domain={['auto', 'auto']}
-              tick={!isMobile}
-              style={{ userSelect: 'none' }}
-            />
-            <Tooltip />
+            <YAxis domain={['auto', 'auto']} style={{ userSelect: 'none' }} />
+            <Tooltip formatter={customTooltip} />
             <Legend />
             {symbols &&
               symbols.map((symbol, i) => (

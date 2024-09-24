@@ -68,16 +68,25 @@ export const Graph = () => {
           margin={{
             top: 5,
             right: 30,
-            left: isMobile ? -40 : 20,
+            left: isMobile ? -10 : 20,
             bottom: 5,
           }}
           onMouseDown={(e) => {
+            if (isMobile) {
+              return
+            }
             setZoomArea({ ...zoomArea, left: e.activeLabel })
           }}
           onMouseMove={(e) => {
+            if (isMobile) {
+              return
+            }
             setZoomArea({ ...zoomArea, right: e.activeLabel })
           }}
           onMouseUp={(e) => {
+            if (isMobile) {
+              return
+            }
             let { left, right } = zoomArea
             if (!left || !right || left === right) {
               setZoomArea({ left: '', right: '' })
@@ -106,7 +115,6 @@ export const Graph = () => {
           />
           <YAxis
             domain={['auto', 'auto']}
-            tick={!isMobile}
             yAxisId="1"
             style={{ userSelect: 'none' }}
           />
