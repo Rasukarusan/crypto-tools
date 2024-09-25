@@ -37,7 +37,6 @@ export const USAMarkets = () => {
   ]
 
   const symbols = data.length > 0 ? Object.keys(data[0]).slice(1) : []
-  console.log(symbols)
 
   return (
     <>
@@ -65,17 +64,16 @@ export const USAMarkets = () => {
             <YAxis domain={['auto', 'auto']} style={{ userSelect: 'none' }} />
             <Tooltip formatter={customTooltip} />
             <Legend />
-            {symbols &&
-              symbols.map((symbol, i) => (
-                <Line
-                  key={symbol}
-                  type="monotone"
-                  dataKey={`${symbol}.priceChangeRatio`}
-                  stroke={colors[colors.length - i]}
-                  name={symbol}
-                  dot={false}
-                />
-              ))}
+            {symbols.map((symbol, i) => (
+              <Line
+                key={symbol}
+                type="monotone"
+                dataKey={`${symbol}.priceChangeRatio`}
+                stroke={colors.reverse()[i]}
+                name={symbol}
+                dot={false}
+              />
+            ))}
           </LineChart>
         </ResponsiveContainer>
       </div>
