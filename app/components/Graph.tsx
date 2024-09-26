@@ -101,8 +101,8 @@ export const Graph = () => {
             // TODO:選択した日付幅によってintervalを変える
             setSearchParams({
               ...searchParams,
-              startTime: dateToUnixTime(left).toString(),
-              endTime: dateToUnixTime(right).toString(),
+              startTime: left,
+              endTime: right,
             })
             setZoomArea({ left: '', right: '' })
           }}
