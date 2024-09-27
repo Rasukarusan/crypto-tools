@@ -5,8 +5,6 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import dayjs from 'dayjs'
 import { searchParamsAtom } from '../store/searchParams/atom'
-import 'dayjs/locale/ja'
-dayjs.locale('ja')
 
 export const TimePeriodCalendar: React.FC = () => {
   const [searchParams, setSearchParams] = useAtom(searchParamsAtom)

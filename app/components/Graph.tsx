@@ -1,6 +1,5 @@
 'use client'
 import dayjs from 'dayjs'
-import isBetween from 'dayjs/plugin/isBetween'
 import { useAtom } from 'jotai'
 import { useState } from 'react'
 import { isMobile } from 'react-device-detect'
@@ -10,18 +9,17 @@ import {
   Line,
   LineChart,
   ReferenceArea,
+  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from 'recharts'
+import { useFetchData } from '../hooks/useFetchData'
 import { searchParamsAtom } from '../store/searchParams/atom'
-import { useFetchData } from '../useFetchData'
-import { dateToUnixTime } from '../util'
 import { SymbolSelect } from './SymbolSelect'
 import { TimePeriodCalendar } from './TimePeriodCalender'
 import { TimePeriodTabs } from './TimePeriodTabs'
-dayjs.extend(isBetween)
 
 export const Graph = () => {
   const { data } = useFetchData()
@@ -107,7 +105,13 @@ export const Graph = () => {
             setZoomArea({ left: '', right: '' })
           }}
         >
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid vertical={false} />
+          <ReferenceLine
+            yAxisId="1"
+            y={1}
+            stroke="gray"
+            strokeDasharray="3 3"
+          />
           <XAxis
             style={{ userSelect: 'none' }}
             dataKey="date"
@@ -119,7 +123,7 @@ export const Graph = () => {
             style={{ userSelect: 'none' }}
           />
           <Tooltip formatter={customTooltip} />
-          <Legend />
+          <Legend wrapperStyle={{ userSelect: 'none' }} />
           {symbols &&
             symbols.map((symbol, i) => (
               <Line

@@ -1,6 +1,4 @@
 'use client'
-import dayjs from 'dayjs'
-import isBetween from 'dayjs/plugin/isBetween'
 import { isMobile } from 'react-device-detect'
 import {
   CartesianGrid,
@@ -12,8 +10,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import { useUSAMarketsData } from '../useUSAMarketsData'
-dayjs.extend(isBetween)
+import { useUSAMarketsData } from '../hooks/useUSAMarketsData'
 
 export const USAMarkets = () => {
   const { data } = useUSAMarketsData()
@@ -40,8 +37,8 @@ export const USAMarkets = () => {
 
   return (
     <>
-      <h2 className="text-center font-bold text-2xl">米国三指数</h2>
-      <div className="text-center mb-4">（最大60日間まで）</div>
+      <h2 className="text-center font-bold text-2xl select-none">米国三指数</h2>
+      <div className="text-center mb-4 select-none">（最大60日間まで）</div>
       <div className="h-[500px] flex items-center justify-center">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart
@@ -55,7 +52,7 @@ export const USAMarkets = () => {
               bottom: 5,
             }}
           >
-            <CartesianGrid strokeDasharray="3 3" />
+            <CartesianGrid vertical={false} />
             <XAxis
               style={{ userSelect: 'none' }}
               dataKey="date"
@@ -63,7 +60,7 @@ export const USAMarkets = () => {
             />
             <YAxis domain={['auto', 'auto']} style={{ userSelect: 'none' }} />
             <Tooltip formatter={customTooltip} />
-            <Legend />
+            <Legend wrapperStyle={{ userSelect: 'none' }} />
             {symbols.map((symbol, i) => (
               <Line
                 key={symbol}

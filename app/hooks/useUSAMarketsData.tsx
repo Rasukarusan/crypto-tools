@@ -1,7 +1,7 @@
 import { useAsyncEffect } from 'ahooks'
 import { useAtom, useAtomValue } from 'jotai'
-import { searchParamsAtom } from './store/searchParams/atom'
-import { usaMarketsDataAtom } from './store/usaMarketsData/atom'
+import { searchParamsAtom } from '../store/searchParams/atom'
+import { usaMarketsDataAtom } from '../store/usaMarketsData/atom'
 
 const formatData = (data) => {
   const result = []

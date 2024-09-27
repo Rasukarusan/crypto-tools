@@ -1,7 +1,7 @@
 import { useAsyncEffect } from 'ahooks'
 import { useAtom, useAtomValue } from 'jotai'
-import { fetchDataAtom } from './store/fetchData/atom'
-import { searchParamsAtom } from './store/searchParams/atom'
+import { fetchDataAtom } from '../store/fetchData/atom'
+import { searchParamsAtom } from '../store/searchParams/atom'
 
 const fetchData = async (interval, startTime, endTime, selectSymbols) => {
   const params = { interval, startTime, endTime, selectSymbols }
