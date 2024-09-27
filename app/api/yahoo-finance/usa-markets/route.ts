@@ -31,8 +31,10 @@ export async function GET(request: NextRequest) {
       const symbol = symbols[key]
       data[key] = []
       const url = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?period1=${startDate}&period2=${endDate}&interval=15m`
+      console.log({ startDate, endDate, url })
       try {
         const res = await fetch(url).then((res) => res.json())
+        console.log(JSON.stringify(res))
         res.chart.result[0].timestamp.forEach((timestamp, i) => {
           const date = dayjs(timestamp * 1000).format('YYYY-MM-DD HH:mm')
           const price = res.chart.result[0].indicators.quote[0].close[i]
