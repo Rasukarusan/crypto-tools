@@ -11,8 +11,9 @@ import {
   YAxis,
 } from 'recharts'
 import { useUSAMarketsData } from '../hooks/useUSAMarketsData'
+import { COLORS } from '../util'
 
-export const USAMarkets = () => {
+export const USAMarketGraph = () => {
   const { data } = useUSAMarketsData()
 
   const customTooltip = (_, name, props) => {
@@ -22,16 +23,6 @@ export const USAMarkets = () => {
     const price = Number(props.payload[name].price).toFixed(2)
     return [`$${price}(${ratioLabel})`, name]
   }
-  const colors = [
-    '#82ca9d',
-    '#8884d8',
-    '#CB80AB',
-    '#E6D9A2',
-    '#FFBE98',
-    '#F05A7E',
-    '#125B9A',
-    '#0B8494',
-  ]
 
   const symbols = data.length > 0 ? Object.keys(data[0]).slice(1) : []
 
@@ -66,7 +57,7 @@ export const USAMarkets = () => {
                 key={symbol}
                 type="monotone"
                 dataKey={`${symbol}.priceChangeRatio`}
-                stroke={colors.reverse()[i]}
+                stroke={COLORS.reverse()[i]}
                 name={symbol}
                 dot={false}
               />

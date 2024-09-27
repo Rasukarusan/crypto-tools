@@ -1,5 +1,5 @@
 import { Graph } from './components/Graph'
-import { USAMarkets } from './components/USAMarkets'
+import { USAMarketGraph } from './components/USAMarketGraph'
 
 export default function Page() {
   return (
@@ -7,10 +7,10 @@ export default function Page() {
       <h1 className="text-blue-700 font-bold text-3xl mb-8 text-center">
         Hi, Crypt!
       </h1>
-      <div className="mb-40 sm:mb-24">
+      <div className="mb-44 sm:mb-24">
         <Graph />
       </div>
-      <USAMarkets />
+      <USAMarketGraph />
     </div>
   )
 }

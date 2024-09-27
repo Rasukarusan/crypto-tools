@@ -14,3 +14,14 @@ export const dateToUnixTime = (dateString) => {
   const unixTime = date.getTime()
   return unixTime
 }
+
+export const COLORS = [
+  '#82ca9d',
+  '#8884d8',
+  '#CB80AB',
+  '#E6D9A2',
+  '#FFBE98',
+  '#F05A7E',
+  '#125B9A',
+  '#0B8494',
+]

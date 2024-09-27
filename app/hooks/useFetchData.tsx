@@ -35,14 +35,10 @@ export const useFetchData = () => {
   const [data, setData] = useAtom(fetchDataAtom)
   const searchParams = useAtomValue(searchParamsAtom)
 
-  const fetchAndRefresh = async (interval, startTime, endTime, symbols) => {
-    const result = await fetchData(interval, startTime, endTime, symbols)
-    setData(result)
-  }
-
   useAsyncEffect(async () => {
     const { interval, startTime, endTime, symbols } = searchParams
-    await fetchAndRefresh(interval, startTime, endTime, symbols)
+    const result = await fetchData(interval, startTime, endTime, symbols)
+    setData(result)
   }, [searchParams])
-  return { data, setData, fetchData: fetchAndRefresh }
+  return { data }
 }

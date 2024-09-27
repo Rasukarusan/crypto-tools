@@ -17,6 +17,7 @@ import {
 } from 'recharts'
 import { useFetchData } from '../hooks/useFetchData'
 import { searchParamsAtom } from '../store/searchParams/atom'
+import { COLORS } from '../util'
 import { SymbolSelect } from './SymbolSelect'
 import { TimePeriodCalendar } from './TimePeriodCalender'
 import { TimePeriodTabs } from './TimePeriodTabs'
@@ -33,16 +34,6 @@ export const Graph = () => {
     const price = Number(props.payload[name].price).toFixed(2)
     return [`$${price}(${ratioLabel})`, name]
   }
-  const colors = [
-    '#82ca9d',
-    '#8884d8',
-    '#CB80AB',
-    '#E6D9A2',
-    '#FFBE98',
-    '#F05A7E',
-    '#125B9A',
-    '#0B8494',
-  ]
 
   // 通貨を追加した時に、追加した分だけ差分描画させるために、searchParams.symbolsを使わずdataから取得している
   const symbols = data && data.length > 0 && Object.keys(data[0]).slice(1)
@@ -50,7 +41,7 @@ export const Graph = () => {
   return (
     <div className="h-[500px] mx-auto">
       <div className="mb-4 block sm:flex justify-end items-center">
-        <div className="mr-4">
+        <div className="mr-4 sm:mb-0 mb-4">
           <TimePeriodCalendar />
         </div>
         <div className="mb-4 sm:mb-0 sm:mr-4 min-w-[250px] w-auto">
@@ -131,7 +122,7 @@ export const Graph = () => {
                 key={symbol}
                 type="monotone"
                 dataKey={`${symbol}.priceChangeRatio`}
-                stroke={colors[i]}
+                stroke={COLORS[i]}
                 name={symbol}
                 dot={false}
               />
