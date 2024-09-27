@@ -16,6 +16,7 @@ import {
   YAxis,
 } from 'recharts'
 import { useFetchData } from '../hooks/useFetchData'
+import { useUsdData } from '../hooks/useUsdData'
 import { searchParamsAtom } from '../store/searchParams/atom'
 import { COLORS } from '../util'
 import { SymbolSelect } from './SymbolSelect'
@@ -24,15 +25,20 @@ import { TimePeriodTabs } from './TimePeriodTabs'
 
 export const Graph = () => {
   const { data } = useFetchData()
+  const { data: usdData } = useUsdData()
   const [searchParams, setSearchParams] = useAtom(searchParamsAtom)
   const [zoomArea, setZoomArea] = useState({ left: '', right: '' })
 
   const customTooltip = (_, name, props) => {
-    const ratio = (props.payload[name].priceChangeRatio - 1) * 100
-    const ratioLabel =
-      ratio > 0 ? `+${ratio.toFixed(2)}%` : `${ratio.toFixed(2)}%`
-    const price = Number(props.payload[name].price).toFixed(2)
-    return [`$${price}(${ratioLabel})`, name]
+    const { price, priceChangeRatio } = props.payload[name]
+    const date = dayjs(props.payload.date).format('YYYY-MM-DD')
+    const usd = usdData.filter((v) => v.date === date)
+    const jpy = usd.length > 0 ? usd.pop().price : 0
+    const jpyLabel = jpy > 0 ? ` / ¥${(jpy * price).toFixed(0)}` : ''
+    const ratio = (priceChangeRatio - 1) * 100
+    const ratioLabel = `(${ratio > 0 ? '+' : ''}${ratio.toFixed(2)}%)`
+    const priceLabel = `$${Number(props.payload[name].price).toFixed(2)}`
+    return [`${priceLabel}${jpyLabel} ${ratioLabel}`, name]
   }
 
   // 通貨を追加した時に、追加した分だけ差分描画させるために、searchParams.symbolsを使わずdataから取得している
