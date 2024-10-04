@@ -1,6 +1,8 @@
 import dayjs from 'dayjs'
 import { type NextRequest, NextResponse } from 'next/server'
 import { dateToUnixTime, utcToJst } from '../../util'
+import 'dayjs/locale/ja'
+dayjs.locale('ja')
 
 const ENDPOINT = 'https://api.binance.com/api/v3'
 
