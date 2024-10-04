@@ -48,6 +48,7 @@ export async function GET(request: NextRequest) {
       }
       const queryString = new URLSearchParams(queryParams).toString()
       // 価格
+      console.log(`${ENDPOINT}/klines?${queryString}`)
       const res = await fetch(`${ENDPOINT}/klines?${queryString}`).then((res) =>
         res.json(),
       )
