@@ -31,7 +31,7 @@ export const Graph = () => {
 
   const customTooltip = (_, name, props) => {
     const { price, priceChangeRatio } = props.payload[name]
-    const jpy = usdData.length > 0 ? usdData[0].price : 0
+    const jpy = usdData && usdData.length > 0 ? usdData[0].price : 0
     const jpyLabel = jpy > 0 ? ` / ¥${(jpy * price).toFixed(0)}` : ''
     const ratio = (priceChangeRatio - 1) * 100
     const ratioLabel = `(${ratio > 0 ? '+' : ''}${ratio.toFixed(2)}%)`
