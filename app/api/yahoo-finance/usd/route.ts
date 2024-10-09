@@ -8,9 +8,10 @@ import { dateToUnixTime } from '../../../util'
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams
-    const today = dayjs().format('YYYY-MM-DD')
-    const startDate = dateToUnixTime(today) / 1000
-    const endDate = dateToUnixTime(today) / 1000
+    const start = dayjs().subtract(1, 'd').format('YYYY-MM-DD')
+    const end = dayjs().format('YYYY-MM-DD')
+    const startDate = dateToUnixTime(start) / 1000
+    const endDate = dateToUnixTime(end) / 1000
 
     const symbol = 'USDJPY=X'
     const url = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?period1=${startDate}&period2=${endDate}&interval=1d`
