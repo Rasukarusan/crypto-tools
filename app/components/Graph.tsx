@@ -60,8 +60,8 @@ export const Graph = () => {
           data={data}
           margin={{
             top: 5,
-            right: 30,
-            left: isMobile ? -10 : 20,
+            right: isMobile ? 0 : 30,
+            left: isMobile ? -60 : 20,
             bottom: 5,
           }}
           onMouseDown={(e) => {
@@ -116,6 +116,8 @@ export const Graph = () => {
             domain={['auto', 'auto']}
             yAxisId="1"
             style={{ userSelect: 'none' }}
+            tickMargin={isMobile ? -50 : 0}
+            axisLine={!isMobile}
           />
           <Tooltip formatter={customTooltip} />
           <Legend wrapperStyle={{ userSelect: 'none' }} />

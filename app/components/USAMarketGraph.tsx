@@ -38,8 +38,8 @@ export const USAMarketGraph = () => {
             data={data}
             margin={{
               top: 5,
-              right: 30,
-              left: isMobile ? -10 : 20,
+              right: isMobile ? 0 : 30,
+              left: isMobile ? -60 : 20,
               bottom: 5,
             }}
           >
@@ -49,7 +49,12 @@ export const USAMarketGraph = () => {
               dataKey="date"
               tickFormatter={(date) => new Date(date).toLocaleDateString()}
             />
-            <YAxis domain={['auto', 'auto']} style={{ userSelect: 'none' }} />
+            <YAxis
+              domain={['auto', 'auto']}
+              style={{ userSelect: 'none' }}
+              tickMargin={isMobile ? -50 : 0}
+              axisLine={!isMobile}
+            />
             <Tooltip formatter={customTooltip} />
             <Legend wrapperStyle={{ userSelect: 'none' }} />
             {symbols.map((symbol, i) => (
