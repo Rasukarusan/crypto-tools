@@ -1,7 +1,7 @@
 'use client'
 import dayjs from 'dayjs'
 import { useAtom } from 'jotai'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import {
   CartesianGrid,
@@ -41,6 +41,11 @@ export const Graph = () => {
 
   // 通貨を追加した時に、追加した分だけ差分描画させるために、searchParams.symbolsを使わずdataから取得している
   const symbols = data && data.length > 0 && Object.keys(data[0]).slice(1)
+
+  const diffDate = useMemo(() => {
+    return dayjs(searchParams.endTime).diff(searchParams.startTime, 'days')
+  }, [searchParams.startTime, searchParams.endTime])
+  const xAxisInterval = diffDate > 90 ? 30 : diffDate < 2 ? 10 : 40
 
   return (
     <div className="h-[500px] mx-auto">
@@ -110,7 +115,14 @@ export const Graph = () => {
           <XAxis
             style={{ userSelect: 'none' }}
             dataKey="date"
-            tickFormatter={(date) => new Date(date).toLocaleDateString()}
+            tickFormatter={(tick) => {
+              const date = dayjs(tick)
+              if (diffDate < 2) {
+                return date.format('HH:mm')
+              }
+              return date.format('MM/DD')
+            }}
+            interval={xAxisInterval}
           />
           <YAxis
             domain={['auto', 'auto']}

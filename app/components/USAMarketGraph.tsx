@@ -1,4 +1,6 @@
 'use client'
+import dayjs from 'dayjs'
+import { useMemo } from 'react'
 import { isMobile } from 'react-device-detect'
 import {
   CartesianGrid,
@@ -25,6 +27,15 @@ export const USAMarketGraph = () => {
   }
 
   const symbols = data.length > 0 ? Object.keys(data[0]).slice(1) : []
+  const diffDate = useMemo(() => {
+    if (data.length === 0) {
+      return 0
+    }
+    const start = data[0].date
+    const end = data[data.length - 1].date
+    return dayjs(end).diff(start, 'days')
+  }, [data])
+  const xAxisInterval = diffDate < 2 ? 2 : 40
 
   return (
     <>
@@ -47,7 +58,17 @@ export const USAMarketGraph = () => {
             <XAxis
               style={{ userSelect: 'none' }}
               dataKey="date"
-              tickFormatter={(date) => new Date(date).toLocaleDateString()}
+              tickFormatter={(tick) => {
+                if (data.length === 0) {
+                  return ''
+                }
+                const date = dayjs(tick)
+                if (diffDate < 2) {
+                  return date.format('HH:mm')
+                }
+                return date.format('M/D')
+              }}
+              interval={xAxisInterval}
             />
             <YAxis
               domain={['auto', 'auto']}
