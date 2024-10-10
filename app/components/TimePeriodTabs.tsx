@@ -28,12 +28,12 @@ export const TimePeriodTabs = () => {
         break
       }
       case '7D': {
-        interval = '15m'
+        interval = '30m'
         startTime = dayjs().subtract(7, 'd').format(format)
         break
       }
       case '1M': {
-        interval = '1h'
+        interval = '2h'
         startTime = dayjs().subtract(1, 'M').format(format)
         break
       }

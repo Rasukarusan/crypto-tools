@@ -21,6 +21,9 @@ export const TimePeriodCalendar: React.FC = () => {
     )
   })
 
+  /**
+   * 指定期間のMAX配列(500)以内に収まるようなintervalを取得
+   */
   const getInterval = (startTime, endTime) => {
     // BinanceAPIで許可されているinterval
     const intervals = {
