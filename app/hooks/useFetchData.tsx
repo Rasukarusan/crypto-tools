@@ -3,8 +3,8 @@ import { useAtom, useAtomValue } from 'jotai'
 import { fetchDataAtom } from '../store/fetchData/atom'
 import { searchParamsAtom } from '../store/searchParams/atom'
 
-const fetchData = async (interval, startTime, endTime, selectSymbols) => {
-  const params = { interval, startTime, endTime, selectSymbols }
+const fetchData = async (startTime, endTime, selectSymbols) => {
+  const params = { startTime, endTime, selectSymbols }
   const queryString = new URLSearchParams(params).toString()
   const res = await fetch(`/api/binance?${queryString}`).then((res) =>
     res.json(),
@@ -36,8 +36,8 @@ export const useFetchData = () => {
   const searchParams = useAtomValue(searchParamsAtom)
 
   useAsyncEffect(async () => {
-    const { interval, startTime, endTime, symbols } = searchParams
-    const result = await fetchData(interval, startTime, endTime, symbols)
+    const { startTime, endTime, symbols } = searchParams
+    const result = await fetchData(startTime, endTime, symbols)
     setData(result)
   }, [searchParams])
   return { data }

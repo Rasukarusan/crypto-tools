@@ -96,7 +96,6 @@ export const Graph = () => {
               left = right
               right = temp
             }
-            // TODO:選択した日付幅によってintervalを変える
             setSearchParams({
               ...searchParams,
               startTime: left,

@@ -2,6 +2,8 @@ import dayjs from 'dayjs'
 import { type NextRequest, NextResponse } from 'next/server'
 import { dateToUnixTime } from '../../../util'
 
+export const dynamic = 'force-dynamic'
+
 /**
  * 本日のUSD/JPYを取得
  */
