@@ -40,6 +40,9 @@
       ],
       "linter": {
         "rules": {
+          "complexity": {
+            "useOptionalChain": "off"
+          },
           "style": {
             "noDefaultExport": "off"
           }
