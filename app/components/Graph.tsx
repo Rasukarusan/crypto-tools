@@ -131,7 +131,23 @@ export const Graph = () => {
             axisLine={!isMobile}
           />
           <Tooltip formatter={customTooltip} />
-          <Legend wrapperStyle={{ userSelect: 'none' }} />
+          <Legend
+            wrapperStyle={{ userSelect: 'none' }}
+            formatter={(value, entry, index) => {
+              const price = Number(data[data.length - 1][value].price)
+              const jpy = usdData && usdData.length > 0 ? usdData[0].price : 0
+              const jpyLabel = jpy > 0 ? `(¥${(jpy * price).toFixed(0)})` : ''
+              return (
+                <div>
+                  <div>{value}</div>
+                  <div>
+                    ${price.toFixed(2)}
+                    {jpyLabel}
+                  </div>
+                </div>
+              )
+            }}
+          />
           {symbols &&
             symbols.map((symbol, i) => (
               <Line
