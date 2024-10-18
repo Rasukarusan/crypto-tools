@@ -49,8 +49,8 @@ export const USAMarketGraph = () => {
             data={data}
             margin={{
               top: 5,
-              right: isMobile ? 0 : 30,
-              left: isMobile ? -60 : 20,
+              right: isMobile ? 20 : 30,
+              left: isMobile ? -40 : 20,
               bottom: 5,
             }}
           >
